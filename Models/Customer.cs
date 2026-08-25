@@ -1,17 +1,22 @@
+using Seido.Utilities.SeedGenerator;
 using System.Security.AccessControl;
 
 namespace Models;
 
-public class Customer : ICustomer
+public class Customer : ICustomer, ISeed<Customer>
 {
-    public virtual string FirstName { get; set; }
-    public virtual string LastName { get; set; }
-    public virtual ICreditCard CreditCard { get; set; }
+    public Guid CustomerId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public ICreditCard CreditCard { get; set; }
 
-    public Customer (string firstName, string lastName, ICreditCard creditCard)
+    public bool Seeded { get; set; } = false;
+    public virtual Customer Seed(SeedGenerator seeder)
     {
-        firstName = FirstName;
-        lastName = LastName;
-        creditCard = CreditCard;
+        Seeded = true;
+        CustomerId = Guid.NewGuid();
+        FirstName = seeder.FirstName;
+        LastName = seeder.LastName; ;
+        return this;
     }
 }

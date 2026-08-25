@@ -1,15 +1,23 @@
+using Seido.Utilities.SeedGenerator;
 namespace Models;
 
 public class CreditCard : ICreditCard
 {
-    public virtual string CreditCardNumber { get; set; }
-    public virtual string ExpiryMonth { get; set; }
-    public virtual string ExpiryYear { get; set; }
+    public Guid CreditCardId { get; set; }
+    public string CreditCardNumber { get; set; }
+    public string ExpiryMonth { get; set; }
+    public string ExpiryYear { get; set; }
 
-    public CreditCard (string creditCardNumber, string expiryMonth, string expiryYear)
+    public bool Seeded { get; set; } = false;
+    public CreditCard Seed(SeedGenerator seeder)
     {
-creditCardNumber = CreditCardNumber;
-expiryMonth = ExpiryMonth;
-expiryYear = ExpiryYear;
+        Seeded = true;
+        CreditCardId = Guid.NewGuid();
+        CreditCardNumber = $"{seeder.Next(1000, 9999)}-{seeder.Next(1000, 9999)}-{seeder.Next(1000, 9999)}-{seeder.Next(1000, 9999)}";
+        ExpiryYear = $"{seeder.Next(2026, 2033)}";
+        ExpiryMonth = $"{seeder.Next(1, 12):D2}";
+
+        return this;
     }
+
 }
